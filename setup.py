@@ -49,6 +49,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
 
+    include_package_data=True,
     packages=['jaydebeapi'],
     install_requires=install_requires,
     )

@@ -38,6 +38,11 @@ plug-in mechanism.
 
 .. contents::
 
+About this fork
+====
+This fork was created for handling adding JDBC jar files at runtime.
+Different jar paths can be provided everytime new JDBC connection is created.
+
 Install
 =======
 
