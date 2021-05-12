@@ -1,3 +1,4 @@
 recursive-include src/test *.py *.sql
+recursive-include jaydebeapi *.jar
 prune *~
 include README*.rst COPYING*
