@@ -358,40 +358,7 @@ def TimestampFromTicks(ticks):
     return apply(Timestamp, time.localtime(ticks)[:6])
 
 
-# DB-API 2.0 Module Interface connect constructor
-def connect(jclassname, url, driver_args=None, jars=None, libs=None):
-    """Open a connection to a database using a JDBC driver and return
-    a Connection instance.
 
-    jclassname: Full qualified Java class name of the JDBC driver.
-    url: Database url as required by the JDBC driver.
-    driver_args: Dictionary or sequence of arguments to be passed to
-           the Java DriverManager.getConnection method. Usually
-           sequence of username and password for the db. Alternatively
-           a dictionary of connection arguments (where `user` and
-           `password` would probably be included). See
-           http://docs.oracle.com/javase/7/docs/api/java/sql/DriverManager.html
-           for more details
-    jars: Jar filename or sequence of filenames for the JDBC driver
-    libs: Dll/so filenames or sequence of dlls/sos used as shared
-          library by the JDBC driver
-    """
-    if isinstance(driver_args, string_type):
-        driver_args = [driver_args]
-    if not driver_args:
-        driver_args = []
-    if jars:
-        if isinstance(jars, string_type):
-            jars = [jars]
-    else:
-        jars = []
-    if libs:
-        if isinstance(libs, string_type):
-            libs = [libs]
-    else:
-        libs = []
-    jconn = _jdbc_connect(jclassname, url, driver_args, jars, libs)
-    return Connection(jconn, _converters)
 
 
 # DB-API 2.0 Connection Object
@@ -438,6 +405,47 @@ class Connection(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
+
+
+# DB-API 2.0 Module Interface connect constructor
+def connect(jclassname, url, driver_args=None, jars=None, libs=None, ConnectionClass=Connection):
+    """Open a connection to a database using a JDBC driver and return
+    a Connection instance.
+
+    jclassname: Full qualified Java class name of the JDBC driver.
+    url: Database url as required by the JDBC driver.
+    driver_args: Dictionary or sequence of arguments to be passed to
+           the Java DriverManager.getConnection method. Usually
+           sequence of username and password for the db. Alternatively
+           a dictionary of connection arguments (where `user` and
+           `password` would probably be included). See
+           http://docs.oracle.com/javase/7/docs/api/java/sql/DriverManager.html
+           for more details
+    jars: Jar filename or sequence of filenames for the JDBC driver
+    libs: Dll/so filenames or sequence of dlls/sos used as shared
+          library by the JDBC driver
+    ConnectionClass: connection class used to create connection object.
+            Uses DB-API 2.0 Connection defined in module by default.
+            Can be used to inject other Connection class (for example a subclass of predefined Connection)
+    """
+    if isinstance(driver_args, string_type):
+        driver_args = [driver_args]
+    if not driver_args:
+        driver_args = []
+    if jars:
+        if isinstance(jars, string_type):
+            jars = [jars]
+    else:
+        jars = []
+    if libs:
+        if isinstance(libs, string_type):
+            libs = [libs]
+    else:
+        libs = []
+    jconn = _jdbc_connect(jclassname, url, driver_args, jars, libs)
+    return ConnectionClass(jconn, _converters)
+
+
 
 
 # DB-API 2.0 Cursor Object
