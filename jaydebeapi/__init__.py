@@ -166,7 +166,7 @@ def _jdbc_connect_jpype_dynamic_classpath(jclassname, url, driver_args, jars, li
 
     if isinstance(driver_args, dict):
         # Properties = jpype.java.util.Properties
-        Properties = jpype.JClass('java.util.Properties', loader=_classloader)
+        Properties = jpype.java.util.Properties
         info = Properties()
         for k, v in driver_args.items():
             info.setProperty(k, v)
