@@ -123,12 +123,7 @@ def _jdbc_connect_jpype_dynamic_classpath(jclassname, url, driver_args, jars, li
     # global _jar_set
     if not jpype.isJVMStarted():
         args = []
-        class_path = []
-        if jars:
-            class_path.extend(jars)
-        class_path.extend(_get_classpath())
-        if class_path:
-            args.append('-Djava.class.path=%s' % os.path.pathsep.join([CLASSLOADER_JAR]))
+        args.append('-Djava.class.path=%s' % os.path.pathsep.join([CLASSLOADER_JAR]))
 
         if libs:
             # path to shared libraries
